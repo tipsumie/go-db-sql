@@ -43,12 +43,19 @@ func main() {
 	}
 
 	repo := repository.ConnectCustomerRepository(db)
-	customers, err := repo.GetCustomers()
+
+	// customers, err := repo.GetCustomers()
+	// if err != nil {
+	// 	fmt.Println(err)
+	// 	return
+	// }
+	// fmt.Printf("%#v", customers)
+
+	customer, err := repo.GetCustomer(2)
 	if err != nil {
 		fmt.Println(err)
 		return
 	}
-
-	fmt.Printf("%#v", customers)
+	fmt.Printf("%#v", customer)
 
 }

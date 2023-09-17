@@ -41,3 +41,20 @@ func (cr *CustomerRepo) GetCustomers() ([]models.Customer, error) {
 	}
 	return customers, nil
 }
+
+func (cr *CustomerRepo) GetCustomer(id int) (*models.Customer, error) {
+	err := cr.db.Ping()
+	if err != nil {
+		return nil, err
+	}
+
+	query := "select * from customers where customer_id=?"
+	row := cr.db.QueryRow(query, id)
+	customer := models.Customer{}
+	err = row.Scan(&customer.CustomerId, &customer.FirstName, &customer.LastName, &customer.Email,
+		&customer.PhoneNumber, &customer.Address, &customer.City, &customer.Country, &customer.PostalCode)
+	if err != nil {
+		return nil, err
+	}
+	return &customer, nil
+}
