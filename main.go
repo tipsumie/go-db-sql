@@ -51,11 +51,28 @@ func main() {
 	// }
 	// fmt.Printf("%#v", customers)
 
-	customer, err := repo.GetCustomer(2)
+	// get data by id
+	customer, err := repo.GetCustomer(21)
 	if err != nil {
 		fmt.Println(err)
 		return
 	}
 	fmt.Printf("%#v", customer)
+
+	// insert data
+	// newCustomer := models.Customer{
+	// 	CustomerId:  21,
+	// 	FirstName:   "Mimie",
+	// 	LastName:    "Poko",
+	// 	Email:       "test@gmail.com",
+	// 	PhoneNumber: "099999999",
+	// 	Address:     "The Earth",
+	// 	City:        "BK",
+	// 	PostalCode:  "5555",
+	// }
+	// err = repo.AddCustomer(newCustomer)
+	// if err != nil {
+	// 	log.Fatalf("Failed to insert data: %v", err)
+	// }
 
 }

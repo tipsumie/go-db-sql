@@ -2,6 +2,7 @@ package repository
 
 import (
 	"database/sql"
+	"errors"
 	"go-db-sql/models"
 )
 
@@ -57,4 +58,26 @@ func (cr *CustomerRepo) GetCustomer(id int) (*models.Customer, error) {
 		return nil, err
 	}
 	return &customer, nil
+}
+
+func (cr *CustomerRepo) AddCustomer(customer models.Customer) error {
+	err := cr.db.Ping()
+	if err != nil {
+		return err
+	}
+
+	query := "insert into customers (customer_id, first_name, last_name, email, phone_number, address, city, country, postal_code) values(?,?,?,?,?,?,?,?,?)"
+	result, err := cr.db.Exec(query, customer.CustomerId, customer.FirstName, customer.LastName, customer.Email, customer.PhoneNumber, customer.Address, customer.City, customer.Country, customer.PostalCode)
+	if err != nil {
+		return err
+	}
+	affected, err := result.RowsAffected()
+	if err != nil {
+		return err
+	}
+
+	if affected <= 0 {
+		return errors.New("Can't insert data")
+	}
+	return nil
 }
