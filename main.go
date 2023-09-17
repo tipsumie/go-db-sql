@@ -3,38 +3,27 @@ package main
 import (
 	"database/sql"
 	"fmt"
+	"go-db-sql/repository"
 
 	_ "github.com/go-sql-driver/mysql"
 )
 
+var db *sql.DB
+
 func main() {
-	db, err := sql.Open("mysql", "root:password@tcp(localhost)/customer")
+	var err error
+	db, err = sql.Open("mysql", "root:password@tcp(localhost)/customer")
 	if err != nil {
 		panic(err)
 	}
 
-	err = db.Ping()
+	repo := repository.ConnectCustomerRepository(db)
+	customers, err := repo.GetCustomers()
 	if err != nil {
-		panic(err)
+		fmt.Println(err)
+		return
 	}
 
-	query := "select customer_id, first_name, last_name from customers"
-	rows, err := db.Query(query)
-	if err != nil {
-		panic(err)
-	}
+	fmt.Printf("%#v", customers)
 
-	// read value each rows.
-	for rows.Next() {
-		customer_id := 0
-		first_name := ""
-		last_name := ""
-
-		err = rows.Scan(&customer_id, &first_name, &last_name)
-		if err != nil {
-			panic(err)
-		}
-
-		fmt.Println(customer_id, first_name, last_name)
-	}
 }
