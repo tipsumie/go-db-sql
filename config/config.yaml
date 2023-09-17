@@ -4,3 +4,9 @@ database:
   database: customer
   username: root
   password: password
+# database:
+#   driver: postgres
+#   host: localhost
+#   database: customer
+#   username: username
+#   password: password

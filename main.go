@@ -8,9 +8,8 @@ import (
 	"log"
 
 	_ "github.com/go-sql-driver/mysql"
+	_ "github.com/lib/pq"
 )
-
-var db *sql.DB
 
 func main() {
 	// var err error
@@ -24,16 +23,19 @@ func main() {
 		log.Fatalf("Failed to load config: %v", err)
 	}
 
+	// mysql dsn
 	dsn := fmt.Sprintf("%s:%s@tcp(%s)/%s",
 		cfg.Database.Username,
 		cfg.Database.Password,
 		cfg.Database.Host,
 		cfg.Database.Database)
 
-	fmt.Printf("Database Config: %+v\n", cfg.Database)
-	fmt.Println("DSN:", dsn)
-
-	// dsn := "root:password@tcp(localhost)/customer"
+	// postgres dsn
+	// dsn := fmt.Sprintf("host=%s user=%s password=%s dbname=%s sslmode=disable",
+	// 	cfg.Database.Host,
+	// 	cfg.Database.Username,
+	// 	cfg.Database.Password,
+	// 	cfg.Database.Database)
 
 	db, err := sql.Open(cfg.Database.Driver, dsn)
 	if err != nil {
