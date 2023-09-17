@@ -1,0 +1,6 @@
+database:
+  driver: mysql
+  host: localhost
+  database: customer
+  username: root
+  password: password
