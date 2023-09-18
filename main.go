@@ -52,12 +52,12 @@ func main() {
 	// fmt.Printf("%#v", customers)
 
 	// get data by id
-	customer, err := repo.GetCustomer(21)
-	if err != nil {
-		fmt.Println(err)
-		return
-	}
-	fmt.Printf("%#v", customer)
+	// customer, err := repo.GetCustomer(21)
+	// if err != nil {
+	// 	fmt.Println(err)
+	// 	return
+	// }
+	// fmt.Printf("%#v", customer)
 
 	// insert data
 	// newCustomer := models.Customer{
@@ -75,4 +75,26 @@ func main() {
 	// 	log.Fatalf("Failed to insert data: %v", err)
 	// }
 
+	// update data
+	// updateCustomer := models.Customer{
+	// 	CustomerId:  21,
+	// 	FirstName:   "Mimi",
+	// 	LastName:    "Poko",
+	// 	Email:       "test@gmail.com",
+	// 	PhoneNumber: "099999999",
+	// 	Address:     "The Earth",
+	// 	City:        "BK",
+	// 	PostalCode:  "5555",
+	// }
+	// err = repo.UpdateCustomer(updateCustomer)
+	// if err != nil {
+	// 	log.Fatalf("Failed to update data: %v", err)
+	// }
+
+	// delete data
+
+	err = repo.DeleteCustomer(21)
+	if err != nil {
+		log.Fatalf("Failed to delete data: %v", err)
+	}
 }

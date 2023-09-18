@@ -81,3 +81,47 @@ func (cr *CustomerRepo) AddCustomer(customer models.Customer) error {
 	}
 	return nil
 }
+
+func (cr *CustomerRepo) UpdateCustomer(customer models.Customer) error {
+	err := cr.db.Ping()
+	if err != nil {
+		return err
+	}
+
+	query := "update customers set first_name=? where customer_id=?"
+	result, err := cr.db.Exec(query, customer.FirstName, customer.CustomerId)
+	if err != nil {
+		return err
+	}
+	affected, err := result.RowsAffected()
+	if err != nil {
+		return err
+	}
+
+	if affected <= 0 {
+		return errors.New("Can't update data")
+	}
+	return nil
+}
+
+func (cr *CustomerRepo) DeleteCustomer(id int) error {
+	err := cr.db.Ping()
+	if err != nil {
+		return err
+	}
+
+	query := "delete from customers where customer_id=?"
+	result, err := cr.db.Exec(query, id)
+	if err != nil {
+		return err
+	}
+	affected, err := result.RowsAffected()
+	if err != nil {
+		return err
+	}
+
+	if affected <= 0 {
+		return errors.New("Can't delete data")
+	}
+	return nil
+}
