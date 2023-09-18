@@ -1,13 +1,14 @@
 package main
 
 import (
-	"database/sql"
 	"fmt"
 	"go-db-sql/config"
+	"go-db-sql/models"
 	"go-db-sql/repository"
 	"log"
 
 	_ "github.com/go-sql-driver/mysql"
+	"github.com/jmoiron/sqlx"
 	_ "github.com/lib/pq"
 )
 
@@ -37,7 +38,7 @@ func main() {
 	// 	cfg.Database.Password,
 	// 	cfg.Database.Database)
 
-	db, err := sql.Open(cfg.Database.Driver, dsn)
+	db, err := sqlx.Open(cfg.Database.Driver, dsn)
 	if err != nil {
 		log.Fatalf("Failed to connect to database: %v", err)
 	}
@@ -52,7 +53,7 @@ func main() {
 	// fmt.Printf("%#v", customers)
 
 	// get data by id
-	// customer, err := repo.GetCustomer(21)
+	// customer, err := repo.GetCustomer(1)
 	// if err != nil {
 	// 	fmt.Println(err)
 	// 	return
@@ -76,25 +77,24 @@ func main() {
 	// }
 
 	// update data
-	// updateCustomer := models.Customer{
-	// 	CustomerId:  21,
-	// 	FirstName:   "Mimi",
-	// 	LastName:    "Poko",
-	// 	Email:       "test@gmail.com",
-	// 	PhoneNumber: "099999999",
-	// 	Address:     "The Earth",
-	// 	City:        "BK",
-	// 	PostalCode:  "5555",
-	// }
-	// err = repo.UpdateCustomer(updateCustomer)
-	// if err != nil {
-	// 	log.Fatalf("Failed to update data: %v", err)
-	// }
+	updateCustomer := models.Customer{
+		CustomerId:  21,
+		FirstName:   "Mimi",
+		LastName:    "Poko",
+		Email:       "test@gmail.com",
+		PhoneNumber: "099999999",
+		Address:     "The Earth",
+		City:        "BK",
+		PostalCode:  "5555",
+	}
+	err = repo.UpdateCustomer(updateCustomer)
+	if err != nil {
+		log.Fatalf("Failed to update data: %v", err)
+	}
 
 	// delete data
-
-	err = repo.DeleteCustomer(21)
-	if err != nil {
-		log.Fatalf("Failed to delete data: %v", err)
-	}
+	// err = repo.DeleteCustomer(21)
+	// if err != nil {
+	// 	log.Fatalf("Failed to delete data: %v", err)
+	// }
 }
