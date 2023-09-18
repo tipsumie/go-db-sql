@@ -35,23 +35,53 @@ func (cr *CustomerRepo) GetCustomer(id int) (*models.Customer, error) {
 }
 
 func (cr *CustomerRepo) AddCustomer(customer models.Customer) error {
+	tx, err := cr.db.Beginx()
+	if err != nil {
+		return err
+	}
+
 	query := `
 		insert into customers (customer_id, first_name, last_name, email, phone_number, address, city, country, postal_code) 
 		values(:customer_id, :first_name, :last_name, :email, :phone_number, :address, :city, :country, :postal_code)`
-	_, err := cr.db.NamedExec(query, customer)
-	return err
+	_, err = tx.NamedExec(query, customer)
+	if err != nil {
+		tx.Rollback()
+		return err
+	}
+
+	return tx.Commit()
 }
 
 func (cr *CustomerRepo) UpdateCustomer(customer models.Customer) error {
+	tx, err := cr.db.Beginx()
+	if err != nil {
+		return err
+	}
+
 	query := `update customers set first_name=:first_name where customer_id=:customer_id`
-	_, err := cr.db.NamedExec(query, customer)
-	return err
+	_, err = tx.NamedExec(query, customer)
+	if err != nil {
+		tx.Rollback()
+		return err
+	}
+
+	return tx.Commit()
 }
 
 func (cr *CustomerRepo) DeleteCustomer(id int) error {
+	tx, err := cr.db.Beginx()
+	if err != nil {
+		return err
+	}
+
 	query := "delete from customers where customer_id=:id"
-	_, err := cr.db.NamedExec(query, map[string]interface{}{
+	_, err = tx.NamedExec(query, map[string]interface{}{
 		"id": id,
 	})
-	return err
+	if err != nil {
+		tx.Rollback()
+		return err
+	}
+
+	return tx.Commit()
 }
